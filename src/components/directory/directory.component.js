@@ -5,7 +5,7 @@ const Directory = (props) => {
 	return (
 		<div className="directory-container">
 			{props.categories.map((category) => (
-				<CategoryItem category={category} />
+				<CategoryItem category={category} key={category.id} />
 			))}
 		</div>
 	);

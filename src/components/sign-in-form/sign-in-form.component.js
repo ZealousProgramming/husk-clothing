@@ -2,7 +2,6 @@ import { useState } from "react";
 
 import {
 	signInWithGooglePopup,
-	createUserDocumentFromAuth,
 	signInAuthUserWithEmailAndPassword,
 } from "../../utils/firebase/firebase.utils";
 
@@ -20,33 +19,27 @@ const SignInForm = () => {
 	const [formFields, setFormFields] = useState(defaultFormFields);
 
 	const signInWithGoogle = async () => {
-		const response = await signInWithGooglePopup();
-
-		console.log("TRY");
-
-		await createUserDocumentFromAuth(response.user);
+		await signInWithGooglePopup();
 	};
 
 	const handleChange = (event) => {
 		setFormFields({ ...formFields, [event.target.name]: event.target.value });
 	};
 
-	const resetFormFields = () => {
-		setFormFields(defaultFormFields);
-	};
+	// const resetFormFields = () => {
+	// 	setFormFields(defaultFormFields);
+	// };
 
 	const onSubmitForm = async (event) => {
 		event.preventDefault();
 
 		try {
-			const response = await signInAuthUserWithEmailAndPassword(
+			await signInAuthUserWithEmailAndPassword(
 				formFields.email,
 				formFields.password
 			);
 
-			console.log(response);
-
-			resetFormFields();
+			// resetFormFields();
 		} catch (err) {
 			switch (err.code) {
 				case "auth/wrong-password": {

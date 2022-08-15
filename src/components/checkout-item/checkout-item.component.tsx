@@ -8,8 +8,13 @@ import {
 } from "../../store/cart/cart.action";
 
 import "./checkout-item.styles.scss";
+import { CartItem } from "../../store/cart/cart.types";
+import { FunctionComponent } from "react";
 
-const CheckoutItem = (props) => {
+type CheckoutItemProps = {
+	item: CartItem;
+}
+const CheckoutItem: FunctionComponent<CheckoutItemProps> = (props) => {
 	const dispatch = useDispatch();
 	const cartItems = useSelector(selectCartItems);
 

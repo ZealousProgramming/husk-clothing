@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, FormEvent, ChangeEvent } from "react";
 import { useDispatch } from "react-redux";
 import {
 	googleSignInStart,
@@ -7,8 +7,10 @@ import {
 
 import Button from "../button/button.component";
 import FormInput from "../form-input/form-input.component";
+import { BUTTON_TYPE } from "../button/button.component";
 
 import "./sign-in-form.styles.scss";
+import { AuthError, AuthErrorCodes } from "firebase/auth";
 
 const defaultFormFields = {
 	email: "",
@@ -23,7 +25,7 @@ const SignInForm = () => {
 		dispatch(googleSignInStart());
 	};
 
-	const handleChange = (event) => {
+	const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
 		setFormFields({ ...formFields, [event.target.name]: event.target.value });
 	};
 
@@ -31,18 +33,18 @@ const SignInForm = () => {
 	// 	setFormFields(defaultFormFields);
 	// };
 
-	const onSubmitForm = async (event) => {
+	const onSubmitForm = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
 		try {
 			dispatch(emailSignInStart(formFields.email, formFields.password));
 		} catch (err) {
-			switch (err.code) {
-				case "auth/wrong-password": {
+			switch ((err as AuthError).code) {
+				case AuthErrorCodes.INVALID_PASSWORD: {
 					alert("Incorrect password or email");
 					break;
 				}
-				case "auth/user-not-found": {
+				case  AuthErrorCodes.USER_DELETED: {
 					alert("No account is associated with this email");
 					break;
 				}
@@ -50,7 +52,7 @@ const SignInForm = () => {
 					alert("Unknown error has occurred");
 			}
 
-			console.log(err);
+			console.log("User sign-in failed", err);
 		}
 	};
 
@@ -78,7 +80,11 @@ const SignInForm = () => {
 
 				<div className="buttons-container">
 					<Button type="submit">SIGN IN</Button>
-					<Button type="button" buttonType="google" onClick={signInWithGoogle}>
+					<Button
+						type="button"
+						buttonType={BUTTON_TYPE.google}
+						onClick={signInWithGoogle}
+					>
 						GOOGLE SIGN IN
 					</Button>
 				</div>

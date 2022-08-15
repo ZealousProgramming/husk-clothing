@@ -1,6 +1,11 @@
+import { FunctionComponent } from "react";
+import { CartItem as TCartItem } from "../../store/cart/cart.types";
 import "./cart-item.styles.scss";
 
-const CartItem = (props) => {
+type CartItemProps = {
+	item: TCartItem;
+}
+const CartItem: FunctionComponent<CartItemProps> = (props) => {
 	return (
 		<div className="cart-item-container">
 			<img src={props.item.imageUrl} alt={`${props.item.name}`} />

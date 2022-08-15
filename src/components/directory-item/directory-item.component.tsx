@@ -1,6 +1,12 @@
+import { FunctionComponent } from "react";
+import { DirectoryCategory } from "../directory/directory.component";
 import "./directory-item.styles.scss";
 
-const DirectoryItem = (props) => {
+type DirectoryItemProps = {
+	category: DirectoryCategory;
+}
+
+const DirectoryItem: FunctionComponent<DirectoryItemProps> = (props) => {
 	return (
 		<div className="directory-item-container" key={props.category.id}>
 			<div
